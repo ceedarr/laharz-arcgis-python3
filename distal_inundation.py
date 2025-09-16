@@ -501,7 +501,7 @@ def WriteHeader(headr):
     masterPlanList=headr['masterPlanList']
    
 
-    outfile = file(ptsfilename, "a")
+    outfile = open(ptsfilename, "a")
     outfile.write("DRAINAGE NAME ENTERED: " + str(drainName) + "\n")
     outfile.write("VALUES SORTED LARGEST TO SMALLEST"+ "\n")
     outfile.write("VOLUMES ENTERED:"+ "\n")
@@ -1271,10 +1271,10 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
             ptsfilename = currentPath+"\\"+str(drainName)+ str(blcount)+".pts"
             arcpy.AddMessage("Current name:  " + str(ptsfilename))
             if not os.path.exists(ptsfilename):
-                outfile = file(ptsfilename, "w")
+                outfile = open(ptsfilename, "w")
                 arcpy.AddMessage( "Textfile Created: " + ptsfilename)
             else:
-                outfile = file(ptsfilename, "a")
+                outfile = open(ptsfilename, "a")
                 arcpy.AddMessage( "Textfile Exists: " + ptsfilename)
             arcpy.AddMessage("Calling writeheader with:  " + str(drainName))
 
@@ -1457,7 +1457,7 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
                 # remaining area - checkPlanExtent[0] - [6] or
                 # 7 simultaneous runs
                 # ===========================================
-                outfile = file(ptsfilename, "a")
+                outfile = open(ptsfilename, "a")
                 iwrite = len(checkPlanExtent)
                 if iwrite == 1:
                     outfile.write(str(checkPlanExtent[0])+ "\n")
