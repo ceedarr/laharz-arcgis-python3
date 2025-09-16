@@ -58,7 +58,7 @@ def ConvertTxtToList(atxtfilename,alist,dattype,conflim):
             alist.append(y)
 
         else:
-            if aline.find(',') <> -1: # if it does have a ','
+            if aline.find(',') != -1: # if it does have a ','
                 x = aline.rstrip('\n')
                 y = x.split(',')
                 for i in range(len(y)):
@@ -175,7 +175,7 @@ def StdErrModMean(ABpick,path,UserVol,confLim):
 
     for aline in afile:
 
-        if aline.find(',') <> -1: # if it does have a ','
+        if aline.find(',') != -1: # if it does have a ','
             x = aline.rstrip('\n')
             y = x.split(',')
 
@@ -252,7 +252,7 @@ def StdErrModMean(ABpick,path,UserVol,confLim):
     nminusone = count_n - 1
 
     for aline in afile:
-        if aline.find(',') <> -1: # if it does have a ','
+        if aline.find(',') != -1: # if it does have a ','
             x = aline.rstrip('\n')
             y = x.split(',')
 
@@ -295,7 +295,7 @@ def StdErrModMean(ABpick,path,UserVol,confLim):
     count = 0
 
     for aline in afile:
-        if aline.find(',') <> -1: # if it does have a ','
+        if aline.find(',') != -1: # if it does have a ','
             x = aline.rstrip('\n')
             y = x.split(',')
         linenum = y[0]

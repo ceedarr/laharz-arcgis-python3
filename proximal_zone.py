@@ -46,7 +46,7 @@ arcpy.CheckOutExtension("Spatial")
 ##    # =====================================
 ##    afile = open(atxtfilename, 'r')
 ##    for aline in afile:
-##        if aline.find(',') <> -1: # if it does have a ','
+##        if aline.find(',') != -1: # if it does have a ','
 ##            a = aline.rstrip('\n')
 ##            b = a.split(',')
 ##            for i in range(len(b)):
@@ -81,7 +81,7 @@ def ConvertTxtToList(atxtfilename,alist,dattype):
             alist.append(y)
 
         else:
-            if aline.find(',') <> -1: # if it does have a ','
+            if aline.find(',') != -1: # if it does have a ','
                 x = aline.rstrip('\n')
                 y = x.split(',')
                 for i in range(len(y)):

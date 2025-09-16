@@ -42,7 +42,7 @@ def ConvertTxtToList(atxtfilename,alist):
     afile = open(atxtfilename, 'r')
     
     for aline in afile:
-        if aline.find(',') <> -1: # if it does have a ','
+        if aline.find(',') != -1: # if it does have a ','
             x = aline.rstrip('\n')
             z = x.lstrip(' ')
             y = z.split(',')
