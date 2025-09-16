@@ -533,7 +533,7 @@ def WriteHeader(headr):
     outfile.write("_________________________________________________________"+ "\n")
     outfile.write("DECREASING PLANIMETRIC AREAS LISTED BELOW"+ "\n")
     outfile.write("_________________________________________________________"+ "\n")
-    endtimewh = time.clock()
+    endtimewh = time.process_time()
 
 def AppendCurrPointToPointArrays(cellx,celly,currxarea,planvals,B):
     # =====================================
@@ -904,7 +904,7 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
         #===========================================================================
         # Assign user inputs from menu to appropriate variables
         #===========================================================================
-        starttimetot = time.clock() # calculate time for program run
+        starttimetot = time.process_time() # calculate time for program run
         tottime = 0.0
         arcpy.AddMessage("Parsing user inputs:")
 
@@ -1498,7 +1498,7 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
                 # =====================================
 
                 if checkPlanExtent[0] < 0:
-                    endtimetot = time.clock()
+                    endtimetot = time.process_time()
                     tottime = endtimetot - starttimetot
 
 
@@ -1554,7 +1554,7 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
                     # =====================================
                     #   Stop if infinite loop
                     # =====================================
-                    endtimetot = time.clock()
+                    endtimetot = time.process_time()
                     tottime = endtimetot - starttimetot
 
                     stringtime = CalcTime(tottime)

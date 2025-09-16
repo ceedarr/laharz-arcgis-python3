@@ -17,7 +17,7 @@ import sys, string, os, arcpy, time
 from arcpy import env
 from arcpy.sa import *
 
-starttimetot = time.clock()  # calculate time for program run
+starttimetot = time.process_time()  # calculate time for program run
 
 # Check out license
 arcpy.CheckOutExtension("Spatial")
@@ -178,7 +178,7 @@ def main():
             
             arcpy.AddMessage('Completed merge of : ' + "merge_" + str(w))
 
-        endtimetot = time.clock()
+        endtimetot = time.process_time()
         tottime = endtimetot - starttimetot
         
         arcpy.AddMessage("...Processing Complete...")   

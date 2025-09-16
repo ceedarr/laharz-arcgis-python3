@@ -17,7 +17,7 @@ from arcpy import env
 from arcpy.sa import *
 #from math import *
 
-starttimetot = time.clock()  # calculate time for program run
+starttimetot = time.process_time()  # calculate time for program run
 
 # Check out license
 arcpy.CheckOutExtension("Spatial")
@@ -55,7 +55,7 @@ def main():
         # apply the conversion
         #==========================  
         arcpy.RasterToPolygon_conversion(inRaster, outPolygons, "NO_SIMPLIFY", field)    
-        endtimetot = time.clock()
+        endtimetot = time.process_time()
         tottime = endtimetot - starttimetot
         
         arcpy.AddMessage("...Processing Complete...")   
