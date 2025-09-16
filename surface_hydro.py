@@ -90,7 +90,7 @@ def main():
 
         arcpy.AddMessage( "")
     except:
-        print arcpy.GetMessages(2)
+        print(arcpy.GetMessages(2))
 
 if __name__ == "__main__":
     main()

@@ -632,7 +632,7 @@ def GetNextSectionCell(cellx,celly,cellelev,cellposneg,currFlowDir,wXmax,wXmin,w
         rowoper = -1
         coloper = -1
     else:
-        print "Bad flow direction ", currFlowDir
+        print("Bad flow direction ", currFlowDir)
 
     cellbuffx = cellx
     cellbuffy = celly
@@ -761,7 +761,7 @@ def CalcCrossSection(sectn,currFlowDir,currRow,currCol,planvals,xsectAreaList,B)
         cellleftx = currRow - 1
         celllefty = currCol - 1
     else:
-        print "Bad flow direction ", currFlowDir
+        print("Bad flow direction ", currFlowDir)
 
 
     #=============================================
@@ -1548,7 +1548,7 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
                         currRow = currRow - 1
                         currCol = currCol + 1
                     else:
-                        #print "Bad flow direction ", currFlowDir
+                        #print("Bad flow direction ", currFlowDir)
                         arcpy.AddMessage("Bad flow direction")
                 else:
                     # =====================================
