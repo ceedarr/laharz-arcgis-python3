@@ -66,6 +66,7 @@ def main():
 
     except:
         print(arcpy.GetMessages(2))
+        raise # to avoid overlooking error
 
 if __name__ == "__main__":
     main()
