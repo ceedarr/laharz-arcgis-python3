@@ -39,7 +39,7 @@ def ConvertTxtToList(atxtfilename,alist):
     # Returns:  list
     # =====================================
 
-    afile = open(atxtfilename, 'r')
+    afile = open(atxtfilename, 'r', encoding="utf_8_sig")
     
     for aline in afile:
         if aline.find(',') != -1: # if it does have a ','

@@ -48,7 +48,7 @@ def ConvertTxtToList(atxtfilename,alist,dattype,conflim):
     # Returns:  list
     # =====================================
 
-    afile = open(atxtfilename, 'r')
+    afile = open(atxtfilename, 'r', encoding="utf_8_sig")
 
     for aline in afile:
 
@@ -163,7 +163,7 @@ def StdErrModMean(ABpick,path,UserVol,confLim):
         txtfil = path + "laharz_textfiles\\" + "py_xxplanb.txt"
         arcpy.AddMessage("B - textfile:   " + str(txtfil))
 
-    afile = open(txtfil, 'r')
+    afile = open(txtfil, 'r', encoding="utf_8_sig")
 
     #==================================
     # Initialize totlogv for use in
@@ -240,7 +240,7 @@ def StdErrModMean(ABpick,path,UserVol,confLim):
     #==================================
     # open file for reading second time
     #==================================
-    afile = open(txtfil, 'r')
+    afile = open(txtfil, 'r', encoding="utf_8_sig")
 
     #==================================
     # variable meandiftotal is sum of
@@ -291,7 +291,7 @@ def StdErrModMean(ABpick,path,UserVol,confLim):
     #==================================
     # open t-table text file
     #==================================
-    afile = open(txtfil, 'r')
+    afile = open(txtfil, 'r', encoding="utf_8_sig")
     count = 0
 
     for aline in afile:
@@ -501,7 +501,7 @@ def WriteHeader(headr):
     masterPlanList=headr['masterPlanList']
    
 
-    outfile = open(ptsfilename, "a")
+    outfile = open(ptsfilename, "a", encoding="utf_8_sig")
     outfile.write("DRAINAGE NAME ENTERED: " + str(drainName) + "\n")
     outfile.write("VALUES SORTED LARGEST TO SMALLEST"+ "\n")
     outfile.write("VOLUMES ENTERED:"+ "\n")
@@ -1271,10 +1271,10 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
             ptsfilename = currentPath+"\\"+str(drainName)+ str(blcount)+".pts"
             arcpy.AddMessage("Current name:  " + str(ptsfilename))
             if not os.path.exists(ptsfilename):
-                outfile = open(ptsfilename, "w")
+                outfile = open(ptsfilename, "w", encoding="utf_8_sig")
                 arcpy.AddMessage( "Textfile Created: " + ptsfilename)
             else:
-                outfile = open(ptsfilename, "a")
+                outfile = open(ptsfilename, "a", encoding="utf_8_sig")
                 arcpy.AddMessage( "Textfile Exists: " + ptsfilename)
             arcpy.AddMessage("Calling writeheader with:  " + str(drainName))
 
@@ -1457,7 +1457,7 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
                 # remaining area - checkPlanExtent[0] - [6] or
                 # 7 simultaneous runs
                 # ===========================================
-                outfile = open(ptsfilename, "a")
+                outfile = open(ptsfilename, "a", encoding="utf_8_sig")
                 iwrite = len(checkPlanExtent)
                 if iwrite == 1:
                     outfile.write(str(checkPlanExtent[0])+ "\n")

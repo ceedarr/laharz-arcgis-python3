@@ -44,7 +44,7 @@ arcpy.CheckOutExtension("Spatial")
 ##    #
 ##    # Returns:  alist
 ##    # =====================================
-##    afile = open(atxtfilename, 'r')
+##    afile = open(atxtfilename, 'r', encoding="utf_8_sig")
 ##    for aline in afile:
 ##        if aline.find(',') != -1: # if it does have a ','
 ##            a = aline.rstrip('\n')
@@ -71,7 +71,7 @@ def ConvertTxtToList(atxtfilename,alist,dattype):
     # Returns:  list
     # =====================================
 
-    afile = open(atxtfilename, 'r')
+    afile = open(atxtfilename, 'r', encoding="utf_8_sig")
 
     for aline in afile:
 
@@ -473,8 +473,8 @@ def main():
         # =====================================
         # open files for write, write heading to file of list of coordinates
         # =====================================
-        runo = open(txfileuno, 'w')    
-        report = open(txfile, 'w')
+        runo = open(txfileuno, 'w', encoding="utf_8_sig")    
+        report = open(txfile, 'w', encoding="utf_8_sig")
         #report.write('Northing,Easting')
         #report.write('\n')
         
