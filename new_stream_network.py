@@ -27,13 +27,13 @@ def main():
         #===========================================================================
         arcpy.AddMessage("Parsing user inputs:")
         
-        env.Workspace = sys.argv[1]          # set the ArcGIS workspace
+        env.workspace = sys.argv[1]          # set the ArcGIS workspace
         arcpy.extent = sys.argv[2]           # set extent to input DEM
         arcpy.SnapRaster = sys.argv[2]       # ensure new rasters align with input DEM
-        env.scratchWorkspace = env.Workspace   # set the ArcGIS scratchworkspace
+        env.scratchWorkspace = env.workspace   # set the ArcGIS scratchworkspace
 
         # local variables
-        curdir = env.Workspace                   # current directory
+        curdir = env.workspace                   # current directory
         Flow_accum_raster = sys.argv[2]      # flow accumulation raster
 
         Stream_Value = sys.argv[3]           # stream threshold
