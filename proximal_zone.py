@@ -552,6 +552,7 @@ def main():
         
     except:
         arcpy.GetMessages(2)
+        raise
 
 if __name__ == "__main__":
     main()
