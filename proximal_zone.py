@@ -138,6 +138,20 @@ def main():
         textdir = curdir + "\\laharz_textfiles\\"
         shapedir = curdir + "\\laharz_shapefiles\\"
 
+        # Ensure output directories exist
+        try:
+            if not arcpy.Exists(textdir):
+                # Prefer ArcGIS CreateFolder to keep paths consistent with workspace
+                arcpy.management.CreateFolder(curdir, "laharz_textfiles")
+            if not arcpy.Exists(shapedir):
+                arcpy.management.CreateFolder(curdir, "laharz_shapefiles")
+        except Exception:
+            # Fallback to os.makedirs in case CreateFolder fails due to permissions or path nuances
+            if not os.path.isdir(textdir):
+                os.makedirs(textdir, exist_ok=True)
+            if not os.path.isdir(shapedir):
+                os.makedirs(shapedir, exist_ok=True)
+
         #=============================================
         # report dem selected back to user
         #=============================================        
