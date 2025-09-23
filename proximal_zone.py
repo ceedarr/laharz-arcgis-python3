@@ -433,8 +433,8 @@ def main():
         # Raster to Polygon
         arcpy.AddMessage( "Converting cone/elevation intersection Raster to Polygon:")
         arcpy.AddMessage( "        ")
-    arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp.tif", curdir + "\\" + "hl_cone_1.shp", "SIMPLIFY", "VALUE")
-    arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp.tif", curdir + "\\laharz_shapefiles\\" + "hl_cone" + slopename + ".shp", "SIMPLIFY", "VALUE")
+        arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp.tif", curdir + "\\" + "hl_cone_1.shp", "SIMPLIFY", "VALUE")
+        arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp.tif", curdir + "\\laharz_shapefiles\\" + "hl_cone" + slopename + ".shp", "SIMPLIFY", "VALUE")
         
         # convert the polygon to a polyline
         # Polygon Feature To Line
