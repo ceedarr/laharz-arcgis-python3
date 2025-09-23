@@ -30,3 +30,8 @@ Traceback (most recent call last):
   File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\proximal_zone.py", line 303, in main
     hl_cone_g2.save(curdir + "\\" + "xhltemp")
 RuntimeError: ポインターが無効です
+
+File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\proximal_zone.py", line 436
+    arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp.tif", curdir + "\\" + "hl_cone_1.shp", "SIMPLIFY", "VALUE")
+    ^^^^^
+SyntaxError: expected 'except' or 'finally' block
