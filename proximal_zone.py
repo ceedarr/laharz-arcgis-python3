@@ -300,7 +300,8 @@ def main():
             
             hl_cone_g2 = Con(c_minus_dem > 0, 1)
             #hl_cone_g2.save(curdir + "\\" + "hl_cone_g2")
-            hl_cone_g2.save(curdir + "\\" + "xhltemp")
+            # Save as GeoTIFF to avoid ESRI GRID limitations
+            hl_cone_g2.save(curdir + "\\" + "xhltemp.tif")
             
 # after xy_coordinate have onePointList
             
@@ -380,10 +381,10 @@ def main():
                 # LessThan and SetNull 
                 
                 hl_cone_g2 = Con(c_minus_dem > 0, 1,0)
-                hl_cone_g2.save(curdir + "\\" + "hl_cone_g2" + str(i))
+                hl_cone_g2.save(curdir + "\\" + "hl_cone_g2" + str(i) + ".tif")
                 
                 
-                gridlist.append("hl_cone_g2" + str(i))
+                gridlist.append("hl_cone_g2" + str(i) + ".tif")
                 #arcpy.AddMessage( "Gridlist is:" + str(gridlist))
             interlist.extend(gridlist)
 
@@ -393,35 +394,35 @@ def main():
                 #arcpy.AddMessage( "Multi gridlist is:" + str(gridlist))
                 #arcpy.AddMessage( "        ")
                 
-                arcpy.CopyRaster_management(gridlist[0],"grid1")
+                arcpy.CopyRaster_management(gridlist[0],"grid1.tif")
                 
                 del gridlist[0]
                 #arcpy.AddMessage( "Shortened Multi gridlist is:" + str(gridlist))
                 #arcpy.AddMessage( "        ")
                 
                 for i in range(len(gridlist)):
-                    temp = Con(Raster("grid1") > 0, Raster("grid1"),Raster(gridlist[i]))
-                    temp.save(curdir + "\\" + "temp")
-                    if arcpy.Exists(curdir + "\\" + "grid1"):
-                        arcpy.Delete_management(curdir + "\\" + "grid1")
-                    arcpy.CopyRaster_management("temp","grid1")
-                    if arcpy.Exists(curdir + "\\" + "temp"):
-                        arcpy.Delete_management(curdir + "\\" + "temp")
-                if arcpy.Exists(curdir + "\\" + "grid1"):
-                    arcpy.CopyRaster_management("grid1","xhltempx")
-                    arcpy.Delete_management(curdir + "\\" + "grid1")
+                    temp = Con(Raster("grid1.tif") > 0, Raster("grid1.tif"), Raster(gridlist[i]))
+                    temp.save(curdir + "\\" + "temp.tif")
+                    if arcpy.Exists(curdir + "\\" + "grid1.tif"):
+                        arcpy.Delete_management(curdir + "\\" + "grid1.tif")
+                    arcpy.CopyRaster_management("temp.tif","grid1.tif")
+                    if arcpy.Exists(curdir + "\\" + "temp.tif"):
+                        arcpy.Delete_management(curdir + "\\" + "temp.tif")
+                if arcpy.Exists(curdir + "\\" + "grid1.tif"):
+                    arcpy.CopyRaster_management("grid1.tif","xhltempx.tif")
+                    arcpy.Delete_management(curdir + "\\" + "grid1.tif")
                 for i in range(len(interlist)):
                     if arcpy.Exists(curdir + "\\" + interlist[i]):
                         arcpy.AddMessage( "Deleting:" + interlist[i])
                         arcpy.Delete_management(curdir + "\\" + interlist[i])
             else:
-                if arcpy.Exists(curdir + "\\" + "hl_cone_g20"):
-                    arcpy.CopyRaster_management("hl_cone_g20","xhltempx")
-                    arcpy.Delete_management(curdir + "\\" + "hl_cone_g20")
-            if arcpy.Exists(curdir + "\\" + "xhltempx"):
-                temp = Con(Raster("xhltempx") > 0, Raster("xhltempx"))
-                temp.save(curdir + "\\" + "xhltemp")
-                arcpy.Delete_management(curdir + "\\" + "xhltempx")
+                if arcpy.Exists(curdir + "\\" + "hl_cone_g20.tif"):
+                    arcpy.CopyRaster_management("hl_cone_g20.tif","xhltempx.tif")
+                    arcpy.Delete_management(curdir + "\\" + "hl_cone_g20.tif")
+            if arcpy.Exists(curdir + "\\" + "xhltempx.tif"):
+                temp = Con(Raster("xhltempx.tif") > 0, Raster("xhltempx.tif"))
+                temp.save(curdir + "\\" + "xhltemp.tif")
+                arcpy.Delete_management(curdir + "\\" + "xhltempx.tif")
                     
 # after textfile, have an xhltemp of all merged
 
@@ -432,8 +433,8 @@ def main():
         # Raster to Polygon
         arcpy.AddMessage( "Converting cone/elevation intersection Raster to Polygon:")
         arcpy.AddMessage( "        ")
-        arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp", curdir + "\\" + "hl_cone_1.shp", "SIMPLIFY", "VALUE")
-        arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp", curdir + "\\laharz_shapefiles\\" + "hl_cone" + slopename + ".shp", "SIMPLIFY", "VALUE")
+    arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp.tif", curdir + "\\" + "hl_cone_1.shp", "SIMPLIFY", "VALUE")
+    arcpy.RasterToPolygon_conversion(curdir + "\\" + "xhltemp.tif", curdir + "\\laharz_shapefiles\\" + "hl_cone" + slopename + ".shp", "SIMPLIFY", "VALUE")
         
         # convert the polygon to a polyline
         # Polygon Feature To Line
@@ -557,8 +558,14 @@ def main():
             arcpy.Delete_management(curdir + "\\" + "hl_cone_2.shp")
         if arcpy.Exists(curdir + "\\" + "intersect_g"):
             arcpy.Delete_management(curdir + "\\" + "intersect_g")
-        if arcpy.Exists(curdir + "\\" + "xhltemp"):
-            arcpy.Delete_management(curdir + "\\" + "xhltemp")
+        if arcpy.Exists(curdir + "\\" + "xhltemp.tif"):
+            arcpy.Delete_management(curdir + "\\" + "xhltemp.tif")
+        if arcpy.Exists(curdir + "\\" + "grid1.tif"):
+            arcpy.Delete_management(curdir + "\\" + "grid1.tif")
+        if arcpy.Exists(curdir + "\\" + "temp.tif"):
+            arcpy.Delete_management(curdir + "\\" + "temp.tif")
+        if arcpy.Exists(curdir + "\\" + "xhltempx.tif"):
+            arcpy.Delete_management(curdir + "\\" + "xhltempx.tif")
 
         arcpy.AddMessage( "Processing Complete.")
         arcpy.AddMessage( "")
