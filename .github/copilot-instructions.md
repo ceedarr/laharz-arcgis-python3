@@ -55,13 +55,15 @@
 - `laharz_textfiles` と `laharz_shapefiles` を作成済みであること。
 
 ## コミットメッセージ運用 (Conventional Commits)
-AI にコミット文生成を依頼した場合は、[Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) 仕様をベースに常に以下 3 案を提示する: 基本 / 詳細 / 要約重視。
+AI にコミット文生成を依頼した場合は、[Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) 仕様をベースに常に以下 3 案を提示する: 詳細 / 基本 / 要約重視。事実と仮説（推測）を厳密に分離して記述すること。
 
 ### フォーマット
 ```
 <type>(<scope>): <要約>
 
-WHY: <理由> (任意)
+WHY:
+  - 事実: <観測した事象・ログ・再現条件など、検証可能な事実のみ>
+  - 仮説: <事実に基づく推測。根拠が薄い場合は「可能性」レベルで明示>
 BEFORE: <主な変更前状態> (必要に応じ)
 AFTER: <主な変更後状態> (必要に応じ)
 
@@ -97,9 +99,38 @@ AFTER: 3案出力と詳細列挙を標準化。
 - 3種(基本/詳細/要約) 提示方針を明文化
 ```
 
-### 3 案出力方針
-1. 基本: 要約 + WHY (必要最小)
-2. 詳細: WHY/AFTER + `変更点:` 箇条書き（標準）
-3. 要約重視: subject 強調 / 本文最小化
+### 3 案出力方針（提示順: 詳細 → 基本 → 要約重視）
+1. 詳細: WHY（事実/仮説）+ BEFORE/AFTER + `変更点:` を完全に記述（最も包括的）
+2. 基本: 詳細の要点を圧縮（読みやすさ重視、ただし WHY の事実/仮説分離は維持）
+3. 要約重視: subject を強調し本文は最小化（最低限の WHY は事実/仮説分離で明記）
 
 差分が極小（1行スペース調整等）の場合のみ 1 案 (chore/style) でもよいが、その判断はユーザー指示があるときに限る。
+
+### 事実と仮説の分離ルール（必読）
+- 事実:
+  - 実行ログ、例外メッセージ、再現手順、生成物の有無・型、ファイル名、タイムスタンプなど検証可能な内容のみ。
+  - 「〜のようだ」「〜と思われる」は使用しない。
+- 仮説（推測）:
+  - 事実に基づき因果・寄与要因を推定する際に使用。「可能性」「仮説」などの語を付し、断定しない。
+  - 反証可能性や未検証の前提がある場合は、明示する。
+- BEFORE/AFTER は観測事実ベースで記述し、変更点は具体的操作（関数/ファイル/設定）+ 目的 で簡潔に列挙する。
+
+### 例（詳細案・雛形）
+```
+fix(proximal-zone): 中間ラスタをGeoTIFF化し再実行で完走を確認
+
+WHY:
+  - 事実: 1m メッシュの過去実行で RuntimeError「Invalid pointer」を観測（proximal_zone.py 保存処理付近）。変更後の再実行では例外なく完了し出力が生成された。
+  - 仮説: フォルダ出力の ESRI GRID 形式や中間ラスタの全NoDataが失敗要因に寄与した可能性。
+BEFORE: 中間生成物（xhltemp 等）が拡張子なし=ESRI GRID。テスト途中で RasterToPolygon の2行が try 外にあり SyntaxError が発生。
+AFTER: 中間生成物を GeoTIFF（xhltemp.tif 等）へ統一し参照/クリーンアップも追随。RasterToPolygon の2行を try 内にインデント修正。最終ラスタの形式は従来のまま（GRID）。
+
+変更点:
+- xhltemp を xhltemp.tif で保存し参照先を .tif に更新
+- Textfile 分岐の一時ラスタを .tif（hl_cone_g2{i}.tif, grid1.tif, temp.tif, xhltempx.tif）へ統一
+- RasterToPolygon 入力を xhltemp.tif に変更
+- .tif 一時ファイルの削除処理を追加
+- RasterToPolygon の2行を try ブロック内にインデント修正
+
+Refs: <チケット/PR/ログURL等>
+```
