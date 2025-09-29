@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 1647, in <module>
+    main(argv[1], argv[2], argv[3], argv[4], argv[5], argv[6])
+  File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 1198, in main
+    isnull_result.save(currentPath + "\\" + "startpts_g") # create startpts_g having values of 0 and 1
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: ポインターが無効です
