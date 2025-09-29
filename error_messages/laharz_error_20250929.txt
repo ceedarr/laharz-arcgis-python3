@@ -5,3 +5,76 @@ Traceback (most recent call last):
     isnull_result.save(currentPath + "\\" + "startpts_g") # create startpts_g having values of 0 and 1
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 RuntimeError: ポインターが無効です
+
+
+
+17時09分
+
+Parsing user inputs:
+Running Laharz_py
+_________ Input Values _________
+Input Surface Raster Is:C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkfill
+Volume textfile   :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\laharz_textfiles\volumes_ontake.txt
+Starting coordinates file  :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\laharz_textfiles\ontake_lahar_startpnt.txt
+Drainage identifier  :jigoku2_
+Lahar Selected
+_________ Paths on Disk _________
+full path fill  :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkfill
+full path dir   :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkdir
+full path flac  :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkflac
+full path str   :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkstr
+_________ Creating DEM Array _________
+_________ Get NumPyArray Dimensions _________
+Shape is: (3531, 4270) (rows, colums)
+Number of rows is: 3531
+Number of columns is: 4270
+_________ Set Window Boundaries _________
+wXmin (TOP): 0
+wXmax (BOTTOM): 3530
+wYmin (LEFT): 0
+wYmax (RIGHT): 4269
+_________ Convert Textfiles to Arrays _________
+Volume List is: [1000000, 2000000, 2900000, 5000000, 8000000]
+Points entered: [[722492, 3971938]]
+Number of start points parsed: 1
+Cross Section Area List is: [500, 794, 1017, 1462, 2000]
+Planimetric Area List is: [2000000, 3174802, 4067198, 5848035, 8000000]
+Start points inside DEM extent: 1
+_________ Creating startpts_g (GeoTIFF) _________
+_________ Creating Starting Points Array _________
+_________ Creating Flow Direction Array _________
+Total rows : 3531
+Total columns : 4270
+Found the zero : 1696.6797
+found points: [[1102, 1517]]
+Current flow direction:  4
+Current name:  C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\jigoku2_1.pts
+Textfile Created: C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\jigoku2_1.pts
+Calling writeheader with:  jigoku2_
+New Flow Direction is: 2
+______________________________________
+ NUMBER OF STREAM CELLS TRAVERSED: 1
+New Flow Direction is: 4
+______________________________________
+ NUMBER OF STREAM CELLS TRAVERSED: 2
+New Flow Direction is: 8
+
+... (同様のため省略)
+
+______________________________________
+ NUMBER OF STREAM CELLS TRAVERSED: 138
+New Flow Direction is: 0
+______________________________________
+ NUMBER OF STREAM CELLS TRAVERSED: 139
+Traceback (most recent call last):
+  File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 1650, in <module>
+    main(argv[1], argv[2], argv[3], argv[4], argv[5], argv[6])
+  File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 1348, in main
+    planvals,B = CalcCrossSection(sectn,currFlowDir,currRow,currCol,planvals,xsectAreaList,B)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 771, in CalcCrossSection
+    cellleftelev = A[cellleftx,celllefty]
+                   ^
+UnboundLocalError: cannot access local variable 'cellleftx' where it is not associated with a value
+Failed script Laharz distal zones...
+Failed to execute (laharzdistalzones.py).
