@@ -1,0 +1,40 @@
+Start Time: 2025年9月26日 15:33:15
+Parsing user inputs:
+Running Laharz_py
+_________ Input Values _________
+Input Surface Raster Is:C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkfill
+Volume textfile   :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\laharz_textfiles\volumes_ontake.txt
+Starting coordinates file  :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\laharz_textfiles\ontake_lahar_startpnt.txt
+Drainage identifier  :jigoku2_
+Lahar Selected
+_________ Paths on Disk _________
+full path fill  :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkfill
+full path dir   :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkdir
+full path flac  :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkflac
+full path str   :C:\Users\(user)\Documents\ArcGIS_Projects\ontake_laharz\data_src\5m_mesh\otkstr
+_________ Creating DEM Array _________
+_________ Get NumPyArray Dimensions _________
+Shape is: (3476, 4270) (rows, colums)
+Number of rows is: 3476
+Number of columns is: 4270
+_________ Set Window Boundaries _________
+wXmin (TOP): 0
+wXmax (BOTTOM): 3475
+wYmin (LEFT): 0
+wYmax (RIGHT): 4269
+_________ Convert Textfiles to Arrays _________
+Volume List is: [1000000, 2000000, 2900000, 5000000, 8000000]
+Points entered: [[722492, 3971938]]
+Cross Section Area List is: [500, 794, 1017, 1462, 2000]
+Planimetric Area List is: [2000000, 3174802, 4067198, 5848035, 8000000]
+_________ Creating startpts_g _________
+Traceback (most recent call last):
+  File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 1621, in <module>
+    main(argv[1], argv[2], argv[3], argv[4], argv[5], argv[6])
+  File "C:\Users\(user)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 1172, in main
+    isnull_result.save(currentPath + "\\" + "startpts_g") # create startpts_g having values of 0 and 1
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: ポインターが無効です 
+Failed script Laharz distal zones...
+Failed to execute (laharzdistalzones.py).
+Failed at 2025年9月26日 15:33:16 (Elapsed Time: 1.42 seconds)
