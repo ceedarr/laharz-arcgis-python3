@@ -1065,6 +1065,9 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
         xstartpoints = ConvertTxtToList(coordsTextFile, xstartpoints, 'points', conflim)
         numstartpts = len(xstartpoints)
         arcpy.AddMessage("Points entered: " + str(xstartpoints))
+        arcpy.AddMessage("Number of start points parsed: " + str(numstartpts))
+        if numstartpts == 0:
+            arcpy.AddWarning("No start points were parsed from '" + coordsTextFile + "'. Subsequent processing will fail.")
 
         # =====================================
         # call CalcArea function with parameters of list of volumes,
@@ -1141,18 +1144,35 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
         # and append to startCoordsList
         # =====================================
 
+        dem_desc = arcpy.Describe(Input_surface_raster)
+        dem_extent = dem_desc.extent
+
         startCoordsList = []
+        out_of_extent = []
         for b in range(len(xstartpoints)):
             apoint = xstartpoints[b]    # get coordinates as list of first point
             currx = float(apoint[0])    # assign first value of coord list (X) of first point as float
             curry = float(apoint[1])    # assign second value of coord list (Y) of first point as float
             xonePoint = arcpy.Point(currx, curry)
             startCoordsList.append(xonePoint) # append current point to a list
+            if not (dem_extent.XMin <= currx <= dem_extent.XMax and dem_extent.YMin <= curry <= dem_extent.YMax):
+                out_of_extent.append((b, currx, curry))
 
-        arcpy.AddMessage("_________ Creating startpts_g _________")
+        arcpy.AddMessage("Start points inside DEM extent: " + str(len(startCoordsList) - len(out_of_extent)))
+        if out_of_extent:
+            preview = out_of_extent[:5]
+            arcpy.AddWarning("Detected start points outside DEM extent (index, X, Y): " + str(preview) + (" ..." if len(out_of_extent) > len(preview) else ""))
 
-        if arcpy.Exists(currentPath + "\\" + "startpts_g"):
-            arcpy.Delete_management(currentPath + "\\" + "startpts_g") # delete existing startpts_g
+        if len(startCoordsList) == 0:
+            raise RuntimeError("No valid start points found after parsing '" + coordsTextFile + "'. Aborting before ExtractByPoints.")
+
+        arcpy.AddMessage("_________ Creating startpts_g (GeoTIFF) _________")
+
+        startpts_raster_name = "startpts_g.tif"
+        startpts_raster_path = os.path.join(currentPath, startpts_raster_name)
+
+        if arcpy.Exists(startpts_raster_path):
+            arcpy.Delete_management(startpts_raster_path) # delete existing startpts_g
 
         # =====================================
         # Use cell locations of startCoordsList to create a
@@ -1166,10 +1186,19 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
         # store row, column to start runs
         # =====================================
 
-        tmpStartPoints = ExtractByPoints(Input_surface_raster,startCoordsList,"INSIDE")
+        tmpStartPoints = ExtractByPoints(Input_surface_raster,startCoordsList,"INSIDE")  # type: ignore[name-defined]
 
-        isnull_result = IsNull(tmpStartPoints)
-        isnull_result.save(currentPath + "\\" + "startpts_g") # create startpts_g having values of 0 and 1
+        has_valid_cells = True
+        try:
+            arcpy.GetRasterProperties_management(tmpStartPoints, "MINIMUM")
+        except arcpy.ExecuteError:
+            has_valid_cells = False
+
+        if not has_valid_cells:
+            raise RuntimeError("ExtractByPoints produced an empty raster (all NoData). Check start point coordinates and coordinate system.")
+
+        isnull_result = IsNull(tmpStartPoints)  # type: ignore[name-defined]
+        isnull_result.save(startpts_raster_path) # create startpts_g having values of 0 and 1
 
 
         # =====================================
@@ -1177,7 +1206,7 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
         # =====================================
 
         arcpy.AddMessage("_________ Creating Starting Points Array _________")
-        B = arcpy.RasterToNumPyArray(currentPath + "\\" + "startpts_g")
+        B = arcpy.RasterToNumPyArray(startpts_raster_path)
 
         # =====================================
         #    Convert flow direction grid to NumPyArray
