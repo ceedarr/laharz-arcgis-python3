@@ -23,8 +23,10 @@ import sys, string, os, arcpy, math, time
 from arcpy import env
 from arcpy.sa import *
 from math import *
+from  coefficient_setting import COEFFICIENTS
 
-
+# list of selectable (default) flow types
+SELECTABLEFLOWTYPES = COEFFICIENTS.keys() # ['Lahar', 'Debris_Flow', 'Rock_Avalanche', ...]
 
 # Check out license
 arcpy.CheckOutExtension("Spatial")
@@ -69,6 +71,11 @@ def ConvertTxtToList(atxtfilename,alist,dattype,conflim):
                     alist = y
                 else:
                     alist.append(y)
+            else: # no ','
+                x = aline.rstrip('\n')
+                y = round(float(x.lstrip(' ')))
+                alist.append(y)
+
     afile.close()
 
     return alist
@@ -910,7 +917,8 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
 
         arcpy.env.workspace=workspace
 
-        if flowType == 'Lahar' or flowType == 'Debris_Flow' or flowType == 'Rock_Avalanche':
+        # if flowType == 'Lahar' or flowType == 'Debris_Flow' or flowType == 'Rock_Avalanche':
+        if flowType in SELECTABLEFLOWTYPES:
             flowType = flowType          # lahar, debris flow, rock avalanche
             conflim = False
             arcpy.AddMessage("Running Laharz_py")
@@ -942,12 +950,9 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
             flowType = 'Lahar'
             arcpy.AddMessage("Flow Type is Lahar")
         else:
-            if flowType == 'Lahar':
-                arcpy.AddMessage("Lahar Selected")
-            if flowType == 'Debris_Flow':
-                arcpy.AddMessage("Debris Flow Selected")
-            if flowType == 'Rock_Avalanche':
-                arcpy.AddMessage("Rock Avalanche Selected")
+            if flowType in SELECTABLEFLOWTYPES:
+                arcpy.AddMessage(f"{str(flowType).replace('_', ' ')} Selected")
+                arcpy.AddMessage(COEFFICIENTS[flowType])
         arcpy.AddMessage( "_________ Paths on Disk _________")
 
         #=============================================
@@ -1075,15 +1080,19 @@ def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextF
         # calculated cross section or planimetric area values
         # =====================================
 
-        if flowType == 'Lahar':
-            xsectAreaList = CalcArea(volumeList,0.05,xsectAreaList)
-            planAreaList = CalcArea(volumeList,200,planAreaList)
-        if flowType == 'Debris_Flow':
-            xsectAreaList = CalcArea(volumeList,0.1,xsectAreaList)
-            planAreaList = CalcArea(volumeList,20,planAreaList)
-        if flowType == 'Rock_Avalanche':
-            xsectAreaList = CalcArea(volumeList,0.2,xsectAreaList)
-            planAreaList = CalcArea(volumeList,20,planAreaList)
+        # # LaharZ旧コード (係数指定)
+        # if flowType == 'Lahar':
+        #     xsectAreaList = CalcArea(volumeList,0.05,xsectAreaList)
+        #     planAreaList = CalcArea(volumeList,200,planAreaList)
+        # if flowType == 'Debris_Flow':
+        #     xsectAreaList = CalcArea(volumeList,0.1,xsectAreaList)
+        #     planAreaList = CalcArea(volumeList,20,planAreaList)
+        # if flowType == 'Rock_Avalanche':
+        #     xsectAreaList = CalcArea(volumeList,0.2,xsectAreaList)
+        #     planAreaList = CalcArea(volumeList,20,planAreaList)
+        if flowType in SELECTABLEFLOWTYPES:
+            xsectAreaList = CalcArea(volumeList,COEFFICIENTS[flowType]["A"],xsectAreaList)
+            planAreaList = CalcArea(volumeList,COEFFICIENTS[flowType]["B"],planAreaList)
 
         if conflim:
             # =====================================
