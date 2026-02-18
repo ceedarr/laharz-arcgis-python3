@@ -2,7 +2,7 @@
 
 ## 本ファイルの目的
 
-LAHARZ_py使用に際して発生するエラーを解消する。
+LAHARZ_py使用に際して発生したエラーへの対処内容を記す。
 
 注意:
 本修正は、ArcGIS上でLAHARZ_pyプラグイン「create surface hydrology rasters」「generate new stream network」「hazard zone proximal」「laharz distal zones」を使用したときに発生したエラーに対処したものです。
@@ -10,18 +10,13 @@ LAHARZ_py使用に際して発生するエラーを解消する。
 
 ## 背景
 
-「LAHARZ」は、Schilling (2014) が公開したソフトウェア。USGSのWebサイト (https://pubs.usgs.gov/of/2014/1073/) からダウンロードできる。
-LAHARZは、「ラハール総体積の2/3乗とラハール流路断面積、ラハール総体積の2/3乗とラハール表面積のそれぞれに比例関係が成り立つ」仮定に基づいており、
-入力された地形データ (DEM) 上を、流下開始地点から下流に向かって「地形 (DEMの各グリッド) を充填」するように氾濫エリアを計算する。
-詳細なアルゴリズムを知るには Iverson et al. (1998) やSchilling (1998; 2014) を読むか、プログラム本体を読むことを推奨。
+「LAHARZ」は、Schilling (2014) が公開したソフトウェアです。USGSのWebサイト (https://pubs.usgs.gov/of/2014/1073/) からダウンロードできます。LAHARZはラハール総流量と断面積、総流量と表面積のスケーリング解析に基づいており、入力された地形データ (DEM) 上を、流路の全ての断面積が全て同じAという値に、流下範囲の表面積がBという値になるように流下範囲を計算します。
+詳細なアルゴリズムを知るには Iverson et al. (1998) やSchilling (1998; 2014) を読むか、プログラム本体を読むことを推奨します。
 
-上記で述べた「比例関係」は、断面積=0.05×体積^(2/3); 表面積=200×体積^(2/3)と求められている (Iverson et al., 1998)。
-補足: また2025年時点では、岩屑なだれ、火砕流 (PFz: pyloclastic flow z) などにおいても比例係数が明らかになっている (Schilling, 2014; Widiwijayanti et al., 2009)。
+上記で述べた断面積A、表面積Bは、A=0.05×体積^(2/3); B=200×体積^(2/3)と求められています (Iverson et al., 1998)。
+補足: また2025年時点では、岩屑なだれ、火砕流 (PFz: pyloclastic flow z) などにおいても異なる係数が明らかになっています (Schilling, 2014; Widiwijayanti et al., 2009)。
 
-本ファイル作成時点の課題として、「LAHARZでラハールを計算する際に流動特性に基づき異なる比例係数を適用すべきか」という点に取り組んでいる。
-そのためにLAHARZを使う必要があり本ファイル作成に至った。
-
-## 本文書の前提
+## 本文書がコード修正に使用した環境
 
 - 作業環境:
     - Windows 11
@@ -32,11 +27,11 @@ LAHARZは、「ラハール総体積の2/3乗とラハール流路断面積、�
 
 USGSのWebサイト (https://pubs.usgs.gov/of/2014/1073/) からLAHARZ_py ("LAHARZ_py_example.zip") をダウンロードして展開しておく。
 
-LAHARZ_pyはPythonバージョン2で動作するよう開発されたが、最新のArcGIS ProバージョンはPython3に対応している。
-このままだとバージョン違い由来のエラーが発生する(した)ので、修正すべき内容を下記に列挙する。
+LAHARZ_pyはPythonバージョン2で動作するよう開発されたが、最新のArcGIS ProバージョンはPython3対応でありPython2は利用できない(と思われる)。
+このままだとバージョン違い由来のエラーが発生する(した)ので、修正した内容を下記に列挙する。
 
-また、修正忘れを避けるために、VSCodeなどのコードエディタで文字検索機能を利用することを推奨。
-参考: https://www.chihayafuru.jp/tech/index.php/archives/2294, https://zenn.dev/posita33/articles/vscode_multifiles_find_and_replace, https://iroirodesignlab.com/2023/06/06/837/, https://zenn.dev/uniformnext/articles/0edccd0c681474
+本文書は修正のためにVSCode (コードエディタ) の文字置換機能を利用した。
+文字置換参考: https://www.chihayafuru.jp/tech/index.php/archives/2294, https://zenn.dev/posita33/articles/vscode_multifiles_find_and_replace, https://iroirodesignlab.com/2023/06/06/837/, https://zenn.dev/uniformnext/articles/0edccd0c681474
 
 1. print関数の構文
 
@@ -121,30 +116,18 @@ arcpyライブラリのenv
 
 
 
-7?. エンコード処理 (日本語環境のみ必要な修正)
+7. 係数変更方法の明確化
 
-修正内容:
-+演算子と"\\"を使ったパス結合をos.path.join()を使ったものに変更する
-日本語のPC環境/プロジェクト名/ディレクトリ名のいずれかが原因のため、utf-8とshift-jis混在を解消する。
-英語 (アルファベット、数字など)のみの環境の場合この修正は不要
-要修正ファイルは"distal_inundation.py"
+変更内容：
+LaharZ実行時の係数を簡単に指定できるようにするために、"coefficient_setting.py"という新しいPythonファイルを作成し、そこに係数を定義する方法を採用する。
 
-修正対象: "distal_inundation.py"の1591行目
-```python
-myRaster.save(env.workspace + "\\" + str(drainName) + str(blcount))
-```
-これを下記に書き換える
-```python
-# ======== fixing for encode flexibility 2025-09-09 Kazuki
-# myRaster.save(env.workspace + "\\" + str(drainName) + str(blcount))       # this is original code, which cause error when mixing utf-8 and shift-jis (japanese encode)
+主な変更点（実装）:
+- `coefficient_setting.py` を追加し、係数（A, B）を1か所で管理する構成に変更した。
+- `distal_inundation.py` は固定値の分岐（Lahar=0.05/200 など）ではなく、`COEFFICIENTS` から `flowType` ごとに係数を参照して計算するようになった。
+- 係数例や候補値は `coefficient_catalogue.txt` でも確認できるようにした。
 
-myRaster.save(os.path.join(env.workspace, (str(drainName) + str(blcount)))) # no error even if mixing
+係数調整時にコード本体（`distal_inundation.py`）を編集する必要がなくなり、設定ファイル側の更新だけで運用できるようにしました。
 
-# Alternative using pathlib (optional):
-# import pathlib
-# myRaster.save(str(pathlib.Path(env.workspace) / (str(drainName) + str(blcount)))) # also no error even if mixing but you need to use "pathlib" library additionally
-# ======== end of fixing
-```
 
 
 要修正事項 以上
