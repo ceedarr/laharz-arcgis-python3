@@ -130,4 +130,21 @@ LaharZ実行時の係数を簡単に指定できるようにするために、"c
 
 
 
+8. `hazard zone proximal` の中間ラスタを GeoTIFF (`.tif`) に統一
+
+変更内容：
+`hazard zone proximal` 実行時の中間ラスタについて、拡張子なし（ESRI GRID想定）で保存していた処理を、GeoTIFF（`.tif`）で保存する形に変更した。
+これにより、中間ファイルの扱いを明示的にし、後続処理（ラスタ結合・ポリゴン変換・一時ファイル削除）まで同じ形式で統一した。
+
+この変更の動機は、1mメッシュ実行時に `proximal_zone.py` の保存処理付近で `RuntimeError: Invalid pointer` が発生したことへの対処。
+
+主な変更点（実装）:
+- `proximal_zone.py` において、`xhltemp` を `xhltemp.tif` として保存・参照するように変更した。
+- Textfile 分岐で作成される一時ラスタ（`hl_cone_g2{i}.tif`, `grid1.tif`, `temp.tif`, `xhltempx.tif`）を `.tif` 形式へ統一した。
+- `RasterToPolygon_conversion` の入力ラスタを `xhltemp.tif` に変更した。
+- `.tif` 化した一時ファイルに対応する削除処理を追加した。
+
+この変更により、`hazard zone proximal` の中間ラスタ処理が一貫した形式で運用できるようになった。
+
+
 要修正事項 以上
