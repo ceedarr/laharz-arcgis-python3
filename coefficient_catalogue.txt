@@ -1,0 +1,43 @@
+================================================================
+このファイルは、LaharZ実行時の係数を指定するPythonファイル
+"coefficient_setting.py" で利用可能な係数設定の例を示したものです。
+================================================================
+
+
+# this is a dictionary for defining coefficients based on flow type
+COEFFICIENTS = {
+    'Lahar': {
+        "A": 0.05,  # A: cross sectional area coefficient
+        "B": 200    # B: planimetric area coefficient
+    },
+    'Debris_Flow': {
+        "A": 0.1,
+        "B": 20
+    },
+    'Rock_Avalanche': {
+        "A": 0.2,
+        "B": 20
+    }
+}
+
+COEFFICIENTS = {
+    'Lahar': {     # 20260129 Cohesive_Lahar
+        "A": 0.329,
+        "B": 154
+    },
+    'Debris_Flow': { # 20260129 Intermediate_Lahar
+        "A": 0.253,
+        "B": 129
+    },
+    'Rock_Avalanche': {  # 20260129 Noncohesive_Lahar
+        "A": 0.051,
+        "B": 200
+    }
+}
+
+COEFFICIENTS = {
+    'Lahar': {     # Iverson all data
+        "A": 0.045,
+        "B": 166.081
+    },
+}
