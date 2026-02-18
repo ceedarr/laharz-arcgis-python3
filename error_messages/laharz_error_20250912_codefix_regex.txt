@@ -1,3 +1,0 @@
-UTF-8, Shift-JIS由来のエラー回避 テキストファイルのBOMを削除するために"_sig"版のUTF-8を使用
-search: open\((.+[r|a|w]["|'])\)
-replace: open($1, encoding="utf_8_sig")

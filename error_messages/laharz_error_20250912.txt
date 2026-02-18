@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\(username)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 1622, in <module>
-    main(argv[1], argv[2], argv[3], argv[4], argv[5], argv[6])
-  File "C:\Users\(username)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 1065, in main
-    xstartpoints = ConvertTxtToList(coordsTextFile, xstartpoints, 'points', conflim)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\(username)\Documents\ArcGIS_Projects\laharz_py_script\laharz_py\distal_inundation.py", line 53, in ConvertTxtToList
-    for aline in afile:
-UnicodeDecodeError: 'cp932' codec can't decode byte 0xef in position 0: illegal multibyte sequence
