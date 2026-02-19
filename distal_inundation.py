@@ -19,17 +19,30 @@
 # ---------------------------------------------------------------------------
 
 # Start Up - Import system modules
-import sys, string, os, arcpy, math, time
+import sys, string, os, arcpy, math, time, importlib
 from arcpy import env
 from arcpy.sa import *
 from math import *
-from  coefficient_setting import COEFFICIENTS
+import coefficient_setting
 
+<<<<<<< HEAD
 # list of selectable (default) flow types
 SELECTABLEFLOWTYPES = COEFFICIENTS.keys() # ['Lahar', 'Debris_Flow', 'Rock_Avalanche']
 
 # Check out license
 arcpy.CheckOutExtension("Spatial")
+=======
+# Check out license
+arcpy.CheckOutExtension("Spatial")
+
+
+def LoadCoefficients():
+    # coefficient_setting.py を毎回読み直して、ArcGIS セッション中の変更も反映する
+    importlib.reload(coefficient_setting)
+    coefficients = coefficient_setting.COEFFICIENTS
+    selectable_flowtypes = coefficients.keys()
+    return coefficients, selectable_flowtypes
+>>>>>>> 8947cf831d7f1320c223a7b81e2d32da9083093c
 
 #===========================================================================
 #  Local Functions
@@ -906,6 +919,8 @@ def CalcCrossSection(sectn,currFlowDir,currRow,currCol,planvals,xsectAreaList,B)
 
 
 def main(workspace, Input_surface_raster, drainName, volumeTextFile, coordsTextFile, flowType):
+
+    COEFFICIENTS, SELECTABLEFLOWTYPES = LoadCoefficients()
 
     for i in [1]:
         #===========================================================================
