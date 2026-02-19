@@ -26,7 +26,7 @@ from math import *
 from  coefficient_setting import COEFFICIENTS
 
 # list of selectable (default) flow types
-SELECTABLEFLOWTYPES = COEFFICIENTS.keys() # ['Lahar', 'Debris_Flow', 'Rock_Avalanche', ...]
+SELECTABLEFLOWTYPES = COEFFICIENTS.keys() # ['Lahar', 'Debris_Flow', 'Rock_Avalanche']
 
 # Check out license
 arcpy.CheckOutExtension("Spatial")
