@@ -25,13 +25,6 @@ from arcpy.sa import *
 from math import *
 import coefficient_setting
 
-<<<<<<< HEAD
-# list of selectable (default) flow types
-SELECTABLEFLOWTYPES = COEFFICIENTS.keys() # ['Lahar', 'Debris_Flow', 'Rock_Avalanche']
-
-# Check out license
-arcpy.CheckOutExtension("Spatial")
-=======
 # Check out license
 arcpy.CheckOutExtension("Spatial")
 
@@ -42,7 +35,6 @@ def LoadCoefficients():
     coefficients = coefficient_setting.COEFFICIENTS
     selectable_flowtypes = coefficients.keys()
     return coefficients, selectable_flowtypes
->>>>>>> 8947cf831d7f1320c223a7b81e2d32da9083093c
 
 #===========================================================================
 #  Local Functions
